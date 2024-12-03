@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWOT Analysis and Battlecard Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+        }
+
+        .results-container {
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #2A2A2A;
+        }
+
+        h1, h2 {
+            margin-top: 0;
+            color: #FFD700;
+        }
+
+        .swot-analysis, .battlecard {
+            margin-bottom: 20px;
+        }
+
+        .battlecard table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .battlecard th, .battlecard td {
+            border: 1px solid #555;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .battlecard th {
+            background-color: #333;
+            color: #FFD700;
+        }
+
+        .battlecard tr:nth-child(even) {
+            background-color: #3A3A3A;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #FFD700;
+            color: #1E1E1E;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #E6B800;
+        }
+
+        .feedback-form {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #3A3A3A;
+            border-radius: 5px;
+        }
+
+        .feedback-form textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #2A2A2A;
+            color: #FFFFFF;
+            resize: vertical;
+        }
+
+        .feedback-form button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #FFD700;
+            color: #1E1E1E;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .feedback-form button:hover {
+            background-color: #E6B800;
+        }
+    </style>
+</head>
+<body>
+    <div class="results-container">
+        <h1>SWOT Analysis</h1>
+        
+        {% for brand, analysis in swot_analysis.items() %}
+            <div class="swot-analysis">
+                <h2>{{ brand }}</h2>
+                <div>
+                    {{ analysis | safe }}
+                </div>
+            </div>
+        {% endfor %}
+        
+        <h1>Battlecard</h1>
+        <div class="battlecard">
+            <pre>{{ battlecard }}</pre>
+        </div>
+        
+        <!-- Download and Save Buttons -->
+        <form action="/save" method="post">
+            <input type="hidden" name="battlecard_text" value="{{ battlecard }}">
+            <button type="submit" class="btn">Save Battlecard as Markdown</button>
+        </form>
+
+        {% if excel_file %}
+            <form action="/save" method="post">
+                <input type="hidden" name="excel_file" value="{{ excel_file }}">
+                <button type="submit" class="btn">Download Battlecard as Excel</button>
+            </form>
+        {% endif %}
+
+        <!-- Feedback Form -->
+        <div class="feedback-form">
+            <h2>Feedback</h2>
+            <form action="/feedback" method="post">
+                <textarea name="feedback" placeholder="Your feedback here..." required></textarea>
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
